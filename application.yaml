@@ -1,0 +1,4 @@
+dubbo:
+  registries:
+    nacos:
+      pro

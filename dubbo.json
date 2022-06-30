@@ -1,0 +1,41 @@
+{
+  "$comment": "JSON Schema for Dubbo-Go Framework",
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "title": "Dubbo-Go Framework schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "dubbo"
+  ],
+  "properties": {
+    "dubbo": {
+      "type": "object",
+      "description": "The dubbo is root",
+      "properties": {
+        "registries":{
+          "^[_a-zA-Z][a-zA-Z0-9_-]*$": {
+            "$ref": "#/definitions/registry"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "registry": {
+      "type": "object",
+      "additionalProperties": false,
+      "patternProperties": {
+        "protocol": {
+          "type": "string",
+          "enum": [
+            "nacos",
+            "etcdv3",
+            "polaris",
+            "xds",
+            "zookeeper"
+          ]
+        }
+      }
+    }
+  }
+}
