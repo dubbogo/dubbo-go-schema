@@ -5,4 +5,4 @@ dubbo:
       protocol: nacos
     zk:
       protocol: zookeeper
-      registry-type: ""
+      simplified: false
