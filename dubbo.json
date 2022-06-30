@@ -12,9 +12,14 @@
       "type": "object",
       "description": "The dubbo is root",
       "properties": {
-        "registries":{
-          "^[_a-zA-Z][a-zA-Z0-9_-]*$": {
-            "$ref": "#/definitions/registry"
+        "registries": {
+          "type": "object",
+          "description": "dubbo registry",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[_a-zA-Z][a-zA-Z0-9_-]*$": {
+              "$ref": "#/definitions/registry"
+            }
           }
         }
       }
@@ -24,16 +29,73 @@
     "registry": {
       "type": "object",
       "additionalProperties": false,
-      "patternProperties": {
+      "properties": {
         "protocol": {
           "type": "string",
+          "description": "Registry protocol",
           "enum": [
             "nacos",
             "etcdv3",
             "polaris",
             "xds",
-            "zookeeper"
+            "zookeeper",
+            "service-discovery-registry"
           ]
+        },
+        "timeout": {
+          "type": "string",
+          "description": "Registry timeout default 5s"
+        },
+        "group": {
+          "type": "string",
+          "description": "Registry group"
+        },
+        "namespace": {
+          "type": "string",
+          "description": "Registry namespace"
+        },
+        "ttl": {
+          "type": "string",
+          "description": "Registry ttl default 10s"
+        },
+        "address": {
+          "type": "string",
+          "description": "Registry address support format {protocol}://address"
+        },
+        "username": {
+          "type": "string",
+          "description": "Registry username for auth"
+        },
+        "password": {
+          "type": "string",
+          "description": "Registry password for auth"
+        },
+        "simplified": {
+          "type": "boolean",
+          "description": "Simplified registry"
+        },
+        "preferred": {
+          "type": "boolean",
+          "description": "Always use this registry first if set to true, useful when subscribe to multiple registriesConfig"
+        },
+        "zone": {
+          "type": "string",
+          "description": "The region where the registry belongs, usually used to isolate traffics"
+        },
+        "weight": {
+          "type": "integer",
+          "description": "Affects traffic distribution among registriesConfig, useful when subscribe to multiple registriesConfig Take effect only when no preferred registry is specified."
+        },
+        "registry-type": {
+          "type": "string",
+          "description": "Registry Interface discovery or application discovery default Interface discovery",
+          "enum": [
+            "service"
+          ]
+        },
+        "params": {
+          "type": "object",
+          "description": "Other parameters for registry are passed to the corresponding registry in key-value mode"
         }
       }
     }
