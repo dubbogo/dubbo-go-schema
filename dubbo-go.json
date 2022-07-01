@@ -34,6 +34,25 @@
               "$ref": "#/definitions/registry"
             }
           }
+        },
+        "protocols": {
+          "type": "object",
+          "description": "dubbo protocol",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[_a-zA-Z][a-zA-Z\\d_-]*$": {
+              "$ref": "#/definitions/protocol"
+            }
+          }
+        },
+        "config-center": {
+          "$ref": "#/definitions/config-center"
+        },
+        "metadata-report": {
+          "$ref": "#/definitions/metadata-report"
+        },
+        "provider": {
+          "$ref": "#/definitions/provider"
         }
       }
     }
@@ -98,6 +117,7 @@
         },
         "weight": {
           "type": "integer",
+          "default": 100,
           "description": "Affects traffic distribution among registriesConfig, useful when subscribe to multiple registriesConfig Take effect only when no preferred registry is specified."
         },
         "registry-type": {
@@ -150,6 +170,368 @@
             "local",
             "remote"
           ]
+        }
+      }
+    },
+    "protocol": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "default dubbo",
+          "default": "dubbo",
+          "enum": [
+            "dubbo",
+            "rest",
+            "grpc",
+            "filter",
+            "jsonrpc",
+            "tri",
+            "registry"
+          ]
+        },
+        "ip": {
+          "type": "string"
+        },
+        "port": {
+          "type": "number",
+          "description": "default 20000"
+        },
+        "params": {
+          "type": "object"
+        }
+      }
+    },
+    "config-center": {
+      "type": "object",
+      "description": "config center",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "type": "string",
+          "description": "config center protocol",
+          "enum": [
+            "nacos",
+            "apollo",
+            "file",
+            "zookeeper"
+          ]
+        },
+        "address": {
+          "type": "string",
+          "description": "Registry address support format {protocol}://address"
+        },
+        "data-id": {
+          "type": "string",
+          "description": "data id for nacos"
+        },
+        "app-id": {
+          "type": "string",
+          "description": "data id for nacos"
+        },
+        "cluster": {
+          "type": "string"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "params": {
+          "type": "object",
+          "description": "Other parameters for registry are passed to the corresponding registry in key-value mode"
+        },
+        "timeout": {
+          "type": "string",
+          "description": "Registry timeout",
+          "default": "5s"
+        },
+        "file-extension": {
+          "type": "string",
+          "description": "the suffix of config dataId, also the file extension of config content",
+          "enum": [
+            "json",
+            "toml",
+            "yaml",
+            "yml",
+            "properties"
+          ]
+        }
+      }
+    },
+    "metadata-report": {
+      "type": "object",
+      "description": "metadata report",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string",
+          "description": "Registry address support format {protocol}://address"
+        },
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "timeout": {
+          "type": "string",
+          "description": "metadata report timeout",
+          "default": "20s"
+        }
+      }
+    },
+    "provider": {
+      "type": "object",
+      "description": "provider",
+      "additionalProperties": false,
+      "properties": {
+        "filter": {
+          "type": "string"
+        },
+        "register": {
+          "type": "boolean"
+        },
+        "registry-ids": {
+          "type": "array"
+        },
+        "tracing-key": {
+          "type": "string"
+        },
+        "proxy": {
+          "type": "string",
+          "default": "default"
+        },
+        "adaptive-service": {
+          "type": "boolean"
+        },
+        "adaptive-service-verbose": {
+          "type": "boolean"
+        },
+        "services": {
+          "type": "object",
+          "description": "metadata report",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[_a-zA-Z][a-zA-Z\\d_-]*$": {
+              "$ref": "#/definitions/services"
+            }
+          }
+        }
+      }
+    },
+    "services": {
+      "type": "object",
+      "description": "metadata report",
+      "additionalProperties": false,
+      "properties": {
+        "filter": {
+          "type": "string"
+        },
+        "protocol-ids": {
+          "type": "array"
+        },
+        "interface": {
+          "type": "string"
+        },
+        "registry-ids": {
+          "type": "array"
+        },
+        "cluster": {
+          "type": "string",
+          "default": "failover"
+        },
+        "loadbalance": {
+          "type": "string",
+          "default": "random",
+          "enum": [
+            "roundrobin",
+            "consistenthashing",
+            "leastactive",
+            "xdsringhash",
+            "p2c",
+            "random"
+          ]
+        },
+        "group": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "methods": {
+          "type": "object",
+          "description": "metadata report",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[_a-zA-Z][a-zA-Z\\d_-]*$": {
+              "$ref": "#/definitions/method"
+            }
+          }
+        },
+        "warmup": {
+          "type": "number",
+          "description": "get service register time an do warm up time",
+          "default": 600
+        },
+        "retries": {
+          "type": "number",
+          "description": "Retry count",
+          "default": 2
+        },
+        "serialization": {
+          "type": "string",
+          "enum": [
+            "protobuf",
+            "hessian2",
+            "msgpack",
+            "jsonMapStruct"
+          ]
+        },
+        "params": {
+          "type": "object"
+        },
+        "token": {
+          "type": "string",
+          "description": "if set `true` or `default` use uuid"
+        },
+        "accesslog": {
+          "type": "string"
+        },
+        "tps.limiter": {
+          "type": "string",
+          "description": "allows developer to config both method-level and service-level tps limiter.",
+          "enum": [
+            "method-service",
+            "default"
+          ]
+        },
+        "tps.limit.interval": {
+          "type": "integer"
+        },
+        "tps.limit.strategy": {
+          "type": "string",
+          "enum": [
+            "threadSafeFixedWindow",
+            "slidingWindow",
+            "fixedWindow",
+            "default"
+          ]
+        },
+        "tps.limit.rate": {
+          "type": "integer"
+        },
+        "tps.limit.rejected.handler": {
+          "type": "string",
+          "default": "log"
+        },
+        "execute.limit": {
+          "type": "number"
+        },
+        "execute.limit.rejected.handler": {
+          "type": "string",
+          "default": "log"
+        },
+        "auth": {
+          "type": "boolean",
+          "default": false
+        },
+        "param.sign": {
+          "type": "boolean",
+          "default": false
+        },
+        "tag": {
+          "type": "string"
+        },
+        "max_message_size": {
+          "type": "integer",
+          "default": 4
+        },
+        "tracing-key": {
+          "type": "string"
+        }
+      }
+    },
+    "method": {
+      "type": "object",
+      "description": "metadata report",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "retries": {
+          "type": "string"
+        },
+        "loadbalance": {
+          "type": "string",
+          "enum": [
+            "roundrobin",
+            "consistenthashing",
+            "leastactive",
+            "xdsringhash",
+            "p2c",
+            "random"
+          ]
+        },
+        "weight": {
+          "type": "integer",
+          "default": 100
+        },
+        "tps.limit.interval": {
+          "type": "integer"
+        },
+        "tps.limit.rate": {
+          "type": "integer"
+        },
+        "tps.limit.strategy": {
+          "type": "string",
+          "enum": [
+            "threadSafeFixedWindow",
+            "slidingWindow",
+            "fixedWindow",
+            "default"
+          ]
+        },
+        "execute.limit": {
+          "type": "number"
+        },
+        "execute.limit.rejected.handler": {
+          "type": "string",
+          "default": "log"
+        },
+        "sticky": {
+          "type": "boolean"
+        },
+        "timeout": {
+          "type": "string"
+        }
+      }
+    },
+    "tps": {
+      "type": "object",
+      "description": "metadata report",
+      "additionalProperties": false,
+      "properties": {
+        "limiter": {
+          "type": "string"
         }
       }
     }

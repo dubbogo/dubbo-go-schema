@@ -4,3 +4,15 @@ dubbo:
       timeout: 5s
       registry-type: service
       protocol: nacos
+  protocols:
+    dubbo:
+      name: dubbo
+  provider:
+    services:
+      userService:
+        protocol-ids:
+          - dubbo
+        loadbalance: random
+        serialization:
+
+
