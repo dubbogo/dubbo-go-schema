@@ -22,6 +22,9 @@
             }
           }
         },
+        "application": {
+          "$ref": "#/definitions/application"
+        },
         "registries": {
           "type": "object",
           "description": "dubbo registry",
@@ -107,6 +110,46 @@
         "params": {
           "type": "object",
           "description": "Other parameters for registry are passed to the corresponding registry in key-value mode"
+        }
+      }
+    },
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Application is a configuration for current application, whether the application is a provider or a consumer",
+      "properties": {
+        "organization": {
+          "type": "string",
+          "description": "default dubbo-go"
+        },
+        "name": {
+          "type": "string",
+          "description": "default dubbo.io"
+        },
+        "module": {
+          "type": "string",
+          "description": "default sample"
+        },
+        "group": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string",
+          "description": "default dubbo-go"
+        },
+        "environment": {
+          "type": "string"
+        },
+        "metadata-type": {
+          "type": "string",
+          "description": "The metadata type. remote or local default local",
+          "enum": [
+            "local",
+            "remote"
+          ]
         }
       }
     }
