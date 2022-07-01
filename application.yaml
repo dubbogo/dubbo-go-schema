@@ -2,7 +2,5 @@ dubbo:
   registries:
     nacos:
       timeout: 5s
-      protocol: nacos
-    zk:
-      protocol: zookeeper
-      simplified: false
+      registry-type: service
+      protocol:

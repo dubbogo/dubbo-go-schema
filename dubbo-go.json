@@ -12,6 +12,16 @@
       "type": "object",
       "description": "The dubbo is root",
       "properties": {
+        "profiles": {
+          "type": "object",
+          "description": "Load and merge configuration files based on active",
+          "properties": {
+            "active": {
+              "type": "string",
+              "description": "The file suffix to be loaded"
+            }
+          }
+        },
         "registries": {
           "type": "object",
           "description": "dubbo registry",
@@ -28,6 +38,7 @@
   "definitions": {
     "registry": {
       "type": "object",
+      "description": "Registry center",
       "additionalProperties": false,
       "properties": {
         "protocol": {
