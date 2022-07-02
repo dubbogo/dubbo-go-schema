@@ -76,7 +76,8 @@
               "$ref": "#/definitions/tracing"
             }
           }
-        }
+        },
+        "shutdown": { "$ref": "#/definitions/shutdown"}
       }
     }
   },
@@ -712,6 +713,32 @@
         "use-agent": {
           "type": "boolean",
           "default": false
+        }
+      }
+    },
+    "shutdown": {
+      "type": "object",
+      "description": "metadata report",
+      "additionalProperties": false,
+      "properties": {
+        "timeout": {
+          "type": "string",
+          "default": "60s"
+        },
+        "step-timeout": {
+          "type": "string",
+          "default": "3s"
+        },
+        "consumer-update-wait-time": {
+          "type": "string",
+          "default": "3s"
+        },
+        "reject-handler": {
+          "type": "string"
+        },
+        "internal-signal": {
+          "type": "boolean",
+          "default": true
         }
       }
     }
