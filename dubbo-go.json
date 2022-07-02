@@ -56,6 +56,26 @@
         },
         "consumer": {
           "$ref": "#/definitions/consumer"
+        },
+        "metrics": {
+          "type": "object",
+          "description": "metric",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[_a-zA-Z][a-zA-Z\\d_-]*$": {
+              "$ref": "#/definitions/metric"
+            }
+          }
+        },
+        "tracing": {
+          "type": "object",
+          "description": "tracing",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[_a-zA-Z][a-zA-Z\\d_-]*$": {
+              "$ref": "#/definitions/tracing"
+            }
+          }
         }
       }
     }
@@ -643,6 +663,57 @@
         "method-service",
         "default"
       ]
+    },
+    "metric": {
+      "type": "object",
+      "description": "metadata report",
+      "additionalProperties": false,
+      "properties": {
+        "mode": {
+          "type": "string",
+          "default": "pull"
+        },
+        "namespace": {
+          "type": "string",
+          "default": "dubbo"
+        },
+        "enable": {
+          "type": "boolean",
+          "default": true
+        },
+        "port": {
+          "type": "integer",
+          "default": 9090
+        },
+        "path": {
+          "type": "string",
+          "default": "/metrics"
+        },
+        "push-gateway-address": {
+          "type": "string"
+        }
+      }
+    },
+    "tracing": {
+      "type": "object",
+      "description": "metadata report",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "default": "jaeger"
+        },
+        "serviceName": {
+          "type": "string"
+        },
+        "address": {
+          "type": "string"
+        },
+        "use-agent": {
+          "type": "boolean",
+          "default": false
+        }
+      }
     }
   }
 }
