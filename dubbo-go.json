@@ -53,6 +53,9 @@
         },
         "provider": {
           "$ref": "#/definitions/provider"
+        },
+        "consumer": {
+          "$ref": "#/definitions/consumer"
         }
       }
     }
@@ -327,7 +330,7 @@
         },
         "services": {
           "type": "object",
-          "description": "metadata report",
+          "description": "provider services",
           "additionalProperties": false,
           "patternProperties": {
             "^[_a-zA-Z][a-zA-Z\\d_-]*$": {
@@ -337,9 +340,53 @@
         }
       }
     },
+    "consumer": {
+      "type": "object",
+      "description": "consumer",
+      "additionalProperties": false,
+      "properties": {
+        "filter": {
+          "type": "string"
+        },
+        "registry-ids": {
+          "type": "array"
+        },
+        "request-timeout": {
+          "type": "string",
+          "default": "3s"
+        },
+        "proxy": {
+          "type": "string",
+          "default": "default"
+        },
+        "check": {
+          "type": "boolean"
+        },
+        "adaptive-service": {
+          "type": "boolean"
+        },
+        "tracing-key": {
+          "type": "string"
+        },
+        "max-wait-time-for-service-discovery": {
+          "type": "string",
+          "default": "3s"
+        },
+        "references": {
+          "type": "object",
+          "description": "consumer reference",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[_a-zA-Z][a-zA-Z\\d_-]*$": {
+              "$ref": "#/definitions/reference"
+            }
+          }
+        }
+      }
+    },
     "services": {
       "type": "object",
-      "description": "metadata report",
+      "description": "provider service",
       "additionalProperties": false,
       "properties": {
         "filter": {
@@ -359,22 +406,21 @@
           "default": "failover"
         },
         "loadbalance": {
-          "type": "string",
-          "default": "random",
-          "enum": [
-            "roundrobin",
-            "consistenthashing",
-            "leastactive",
-            "xdsringhash",
-            "p2c",
-            "random"
-          ]
+          "$ref": "#/definitions/loadbalance"
+        },
+        "retries": {
+          "type": "number",
+          "description": "Retry count",
+          "default": 2
         },
         "group": {
           "type": "string"
         },
         "version": {
           "type": "string"
+        },
+        "serialization": {
+          "$ref": "#/definitions/serialization"
         },
         "methods": {
           "type": "object",
@@ -391,20 +437,6 @@
           "description": "get service register time an do warm up time",
           "default": 600
         },
-        "retries": {
-          "type": "number",
-          "description": "Retry count",
-          "default": 2
-        },
-        "serialization": {
-          "type": "string",
-          "enum": [
-            "protobuf",
-            "hessian2",
-            "msgpack",
-            "jsonMapStruct"
-          ]
-        },
         "params": {
           "type": "object"
         },
@@ -416,24 +448,13 @@
           "type": "string"
         },
         "tps.limiter": {
-          "type": "string",
-          "description": "allows developer to config both method-level and service-level tps limiter.",
-          "enum": [
-            "method-service",
-            "default"
-          ]
+          "$ref": "#/definitions/tps.limiter"
         },
         "tps.limit.interval": {
           "type": "integer"
         },
         "tps.limit.strategy": {
-          "type": "string",
-          "enum": [
-            "threadSafeFixedWindow",
-            "slidingWindow",
-            "fixedWindow",
-            "default"
-          ]
+          "$ref": "#/definitions/tps.limit.strategy"
         },
         "tps.limit.rate": {
           "type": "integer"
@@ -469,6 +490,78 @@
         }
       }
     },
+    "reference": {
+      "type": "object",
+      "description": "consumer reference",
+      "properties": {
+        "interface": {
+          "type": "string"
+        },
+        "check": {
+          "type": "boolean"
+        },
+        "url": {
+          "type": "boolean"
+        },
+        "filter": {
+          "type": "string"
+        },
+        "protocol": {
+          "type": "string",
+          "default": "tri"
+        },
+        "registry-ids": {
+          "type": "array"
+        },
+        "cluster": {
+          "type": "string",
+          "default": "failover"
+        },
+        "loadbalance": {
+          "$ref": "#/definitions/loadbalance"
+        },
+        "group": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "serialization": {
+          "$ref": "#/definitions/serialization"
+        },
+        "methods": {
+          "type": "object",
+          "description": "metadata report",
+          "additionalProperties": false,
+          "patternProperties": {
+            "^[_a-zA-Z][a-zA-Z\\d_-]*$": {
+              "$ref": "#/definitions/method"
+            }
+          }
+        },
+        "async": {
+          "type": "boolean"
+        },
+        "params": {
+          "type": "object"
+        },
+        "generic": {
+          "type": "boolean"
+        },
+        "sticky": {
+          "type": "boolean"
+        },
+        "timeout": {
+          "type": "string"
+        },
+        "force.tag": {
+          "type": "boolean"
+        },
+        "tracing-key": {
+          "type": "string"
+        }
+      }
+    },
     "method": {
       "type": "object",
       "description": "metadata report",
@@ -478,18 +571,12 @@
           "type": "string"
         },
         "retries": {
-          "type": "string"
+          "type": "number",
+          "description": "Retry count",
+          "default": 2
         },
         "loadbalance": {
-          "type": "string",
-          "enum": [
-            "roundrobin",
-            "consistenthashing",
-            "leastactive",
-            "xdsringhash",
-            "p2c",
-            "random"
-          ]
+          "$ref": "#/definitions/loadbalance"
         },
         "weight": {
           "type": "integer",
@@ -502,13 +589,7 @@
           "type": "integer"
         },
         "tps.limit.strategy": {
-          "type": "string",
-          "enum": [
-            "threadSafeFixedWindow",
-            "slidingWindow",
-            "fixedWindow",
-            "default"
-          ]
+          "$ref": "#/definitions/tps.limit.strategy"
         },
         "execute.limit": {
           "type": "number"
@@ -525,15 +606,43 @@
         }
       }
     },
-    "tps": {
-      "type": "object",
-      "description": "metadata report",
-      "additionalProperties": false,
-      "properties": {
-        "limiter": {
-          "type": "string"
-        }
-      }
+    "loadbalance": {
+      "type": "string",
+      "default": "random",
+      "enum": [
+        "roundrobin",
+        "consistenthashing",
+        "leastactive",
+        "xdsringhash",
+        "p2c",
+        "random"
+      ]
+    },
+    "serialization": {
+      "type": "string",
+      "enum": [
+        "protobuf",
+        "hessian2",
+        "msgpack",
+        "jsonMapStruct"
+      ]
+    },
+    "tps.limit.strategy": {
+      "type": "string",
+      "enum": [
+        "threadSafeFixedWindow",
+        "slidingWindow",
+        "fixedWindow",
+        "default"
+      ]
+    },
+    "tps.limiter": {
+      "type": "string",
+      "description": "allows developer to config both method-level and service-level tps limiter.",
+      "enum": [
+        "method-service",
+        "default"
+      ]
     }
   }
 }

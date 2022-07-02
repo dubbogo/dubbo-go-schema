@@ -13,6 +13,13 @@ dubbo:
         protocol-ids:
           - dubbo
         loadbalance: random
-        serialization:
+  consumer:
+    references:
+      dddd:
+        filter: dddd
+        interface: ddddd
+        h
+
+
 
 
