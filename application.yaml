@@ -18,7 +18,7 @@ dubbo:
       dddd:
         filter: dddd
         interface: ddddd
-        h
+        timeout: dd
 
 
 

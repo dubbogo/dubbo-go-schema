@@ -3,6 +3,8 @@
 
 ## 怎么使用
 
+> https://zhaoyunxing92.github.io/dubbo-go-schema/dubbo-go.json
+
 ![img.png](images/img.png)
 
 ## 效果图
