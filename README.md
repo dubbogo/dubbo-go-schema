@@ -5,7 +5,7 @@
 
 ## golang
 
-> https://zhaoyunxing92.github.io/dubbo-go-schema/dubbo-go.json
+> https://github.com/dubbogo/dubbo-go-schema/blob/main/dubbo-go.json
 
 ![img.png](images/img.png)
 
@@ -17,7 +17,7 @@
 ```json
 {
   "yaml.schemas": {
-    "https://zhaoyunxing92.github.io/dubbo-go-schema/dubbo-go.json": [
+    "https://github.com/dubbogo/dubbo-go-schema/blob/main/dubbo-go.json": [
       "dubbo.yaml",
       "application.yaml",
       "dubbogo.yaml"
