@@ -522,7 +522,7 @@
           "type": "boolean"
         },
         "url": {
-          "type": "boolean"
+          "type": "string"
         },
         "filter": {
           "type": "string"
