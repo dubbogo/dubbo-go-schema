@@ -77,7 +77,24 @@
             }
           }
         },
-        "shutdown": { "$ref": "#/definitions/shutdown"}
+        "logger": {
+          "$ref": "#/definitions/logger"
+        },
+        "shutdown": { "$ref": "#/definitions/shutdown"},
+        "router": {
+          "$ref": "#/definitions/router"
+        },
+        "event-dispatcher-type": {
+          "type": "string",
+          "default": "direct"
+        },
+        "cache_filecache_file": {
+          "type": "string"
+        },
+        "tls_config": {
+          "$ref": "#/definitions/tls"
+        }
+
       }
     }
   },
@@ -716,6 +733,14 @@
         }
       }
     },
+    "logger": {
+      "type": "object",
+      "properties": {
+        "zap-config":{
+          "$ref": "#/definitions/logger.zap"
+        }
+      }
+    },
     "shutdown": {
       "type": "object",
       "description": "metadata report",
@@ -739,6 +764,182 @@
         "internal-signal": {
           "type": "boolean",
           "default": true
+        }
+      }
+    },
+    "router":{
+      "type": "object",
+      "description": "RouterConfig is the configuration of the router",
+      "additionalProperties": false,
+      "properties": {
+        "scope": {
+          "type": "string",
+          "description": " must be chosen from `service` and `application`"
+        },
+        "key": {
+          "type": "string",
+          "description": "specifies which service or application the rule body acts on."
+        },
+        "force": {
+          "type": "boolean",
+          "default": false
+        },
+        "runtime": {
+          "type": "boolean",
+          "default": false
+        },
+        "enabled": {
+          "type": "boolean",
+          "default": true
+        },
+        "valid": {
+          "type": "boolean",
+          "default": true
+        },
+        "priority": {
+          "type": "integer",
+          "default": 0
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tags": {
+          "type": "array",
+          "$ref": "#/definitions/router-tag"
+        }
+      },
+      "required": ["scope","key"]
+    },
+    "service-discovery": {
+      "type": "object",
+      "description": "",
+      "additionalProperties": false,
+      "properties": {
+        "protocol": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "remote_ref": {
+          "type": "string"
+        }
+      }
+    },
+
+    "tls":{
+      "type": "object",
+      "description": "tls config",
+      "additionalProperties": false,
+      "properties": {
+        "ca-cert-file": {
+          "type": "string"
+        },
+        "tls-cert-file": {
+          "type": "string"
+        },
+        "tls-key-file": {
+          "type": "string"
+        },
+        "tls-server-name": {
+          "type": "string"
+        }
+      }
+    },
+    "router-tag": {
+      "type": "object",
+      "description": "",
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "addresses": {
+          "type": "array",
+          "items":{
+            "type": "string"
+          }
+        }
+      }
+    },
+    "logger.zap": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "level": {
+          "type": "string",
+          "default": "info"
+        },
+        "development": {
+          "type": "boolean",
+          "default": false
+        },
+        "disable-caller": {
+          "type": "boolean",
+          "default": false
+        },
+        "disable-stacktrace": {
+          "type": "boolean",
+          "default": false
+        },
+        "encoding": {
+          "type": "string",
+          "default": "console"
+        },
+        "encoder-config": {
+          "$ref": "#/definitions/logger.zap.encoder"
+        }
+      }
+    },
+    "logger.zap.encoder": {
+      "type": "object",
+      "description": "",
+      "properties": {
+        "message-key": {
+          "type": "string",
+          "default": "message"
+        },
+        "level-key": {
+          "type": "string",
+          "default": "level"
+        },
+        "time-key": {
+          "type": "string",
+          "default": "time"
+        },
+        "name-key": {
+          "type": "string",
+          "default": "logger"
+        },
+        "caller-key": {
+          "type": "string",
+          "default": "caller"
+        },
+        "stacktrace-key": {
+          "type": "string",
+          "default": "stacktrace"
+        },
+        "level-encoder": {
+          "type": "string",
+          "default": "capitalColor"
+        },
+        "time-encoder": {
+          "type": "string",
+          "default": "iso8601"
+        },
+        "duration-encoder": {
+          "type": "string",
+          "default": "seconds"
+        },
+        "calle-encoder": {
+          "type": "string",
+          "default": "short"
+        },
+        "params": {
+          "type": "object"
         }
       }
     }
